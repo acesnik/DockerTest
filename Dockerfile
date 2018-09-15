@@ -2,39 +2,69 @@
 # generated. Edit 'Dockerfile.in' and generate the 'Dockerfile'
 # with the 'rake' command.
 
-# The suggested name for this image is: bioconductor/release_core.
-
-FROM bioconductor/release_base2
+FROM harisekhon/ubuntu-java
 
 # MAINTAINER maintainer@bioconductor.org
 
-LABEL maintainer="Jean-Yves Sgro <jsgro@wisc.edu>"
-LABEL credit="Mark E. Berres<meberres@wisc.edu>"
+LABEL maintainer="Anthony Cesnik <cesnik@wisc.edu>"
 
+############## PACKAGES ############
 
-#####################################################################
-# ADD LIBRARIES HOPEFULLY TO HELP CAIRO TO INSTALL PROPERLY
-# FROM DOCKER FILE IN https://hub.docker.com/r/rocker/tidyverse/~/dockerfile/
-#
-# ALSO  ADD libxt-dev based on info
-# at https://groups.google.com/forum/#!topic/rapache/35lY7B6Wwrk
+WORKDIR /usr/bin/local
 
 RUN apt-get update -qq && apt-get -y --no-install-recommends install \
-  libxml2-dev \
-  libcairo2-dev \
-  libsqlite3-dev \
-  libmariadbd-dev \
-  libmariadb-client-lgpl-dev \
-  libpq-dev \
-  libssh2-1-dev \
-  unixodbc-dev \
-  libxt-dev 
+  ### installers
+  wget \
+  # curl \
+  # gcc \   
+  # g++ \
+  # gfortran \
+  # make \
+  # cmake \
+  # build-essential \
+  # pkg-config \
+  # maven \
+  ### file compression
+  # zlib1g-dev \ 
+  # liblzo2-dev \
+  # unzip \
+  # liblzma-dev \
+  # libncurses5-dev \
+  # libbz2-dev \
+  ### commandline tools
+  # gawk \ 
+  # git \
+  # python \
+  # python-pip \
+  # r-base-core \
+  # python-dev \
+  # python3-dev \
+  # python-setuptools \
+  # libpython2.7-dev \
+  # perl-doc \
+  ### cpanm requirements, required for STAR-Fusion
+  # libxi-dev \ 
+  # libxmu-dev \
+  # freeglut3-dev \
+  # libgsl0-dev \
+  # libnetpbm10-dev \
+  # libplplot-dev \
+  # pgplot5 \
+  # libdb5.3 \
+  # libdb5.3-dev \
+  ### python setup
+  # && pip install --upgrade virtualenv pip qc bitsets cython numpy bx-python pysam RSeQC h5py scipy \ 
+  ### perl setup
+  # && curl -L http://cpanmin.us \ 
+  # | perl - --sudo App::cpanminus \
+  # && cpanm DB_File URI::Escape Set::IntervalTree Carp::Assert JSON::XS PerlIO::gzip \
+  ### downloads
+  && wget -q -O - https://ftp-trace.ncbi.nlm.nih.gov/sra/sdk/current/sratoolkit.current-ubuntu64.tar.gz | tar xz
+  
+RUN ls .
 
 #####################################################################
 
-ADD install.R /tmp/
+COPY ./* ./
 
-# invalidates cache every 24 hours
-ADD http://master.bioconductor.org/todays-date /tmp/
-
-RUN R -f /tmp/install.R
+RUN sratoolkit*/bin/fastq-dump --split-files SRR6304532
