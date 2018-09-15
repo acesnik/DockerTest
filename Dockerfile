@@ -65,6 +65,4 @@ RUN ls .
 
 #####################################################################
 
-COPY ./* ./
-
-RUN sratoolkit*/bin/fastq-dump --split-files SRR6304532
+RUN sratoolkit*/bin/fastq-dump --split-files $var1
