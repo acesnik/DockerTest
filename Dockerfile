@@ -65,4 +65,4 @@ RUN ls .
 
 #####################################################################
 
-RUN sratoolkit*/bin/fastq-dump --split-files $var1
+CMD sratoolkit*/bin/fastq-dump --split-files $var1
